@@ -8,7 +8,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
-use Betteryourweb\Jobs\PasswordEncryptor as Password;
 
 class SyncCommand extends Command
 {
@@ -23,27 +22,33 @@ class SyncCommand extends Command
             ->addArgument('source', InputArgument::REQUIRED)
             ->addArgument('dest', InputArgument::REQUIRED)
 
-
             ->addOption('--port', null, InputOption::VALUE_NONE, 'Choodee port for SSH.')
 
             ;
-
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-      $port = $input->getOption('port');
+        $port = $input->getOption('port');
 
-      if($port) $port = "--port $port";
+        if ($port) {
+            $port = "--port $port";
+        }
 
+        $options = " -avzp -e ssh $port ";
 
-      $options = " -avzp -e ssh $port ";
+        $source = $input->getArgument('source');
+        $dest = $input->getArgument('dest');
+        $command = "rsync $options $source $dest";
+        $output->writeln("<info>$command</info>");
+        $process = new Process($command);
+        $process->run();
+        if (!$process->isSuccessful()) {
+            //throw new \RuntimeException($process->getErrorOutput());
+              return $output->writeln("<info>\n\n ERROR :: ".$process->getErrorOutput().'</info>');
+        }
 
-
-
-      $source = $input->getArgument('source');
-      $dest = $input->getArgument('dest');
-      $command =  "rsync $options $source $dest";
-      $output->writeln("<info>$command</info>");
+        return $output->writeln('<info>'."\n\n\nSuccess ::".$process->getOutput().'</info>');
+                //return openssl_encrypt('-1','passwd',$password);
     }
 }

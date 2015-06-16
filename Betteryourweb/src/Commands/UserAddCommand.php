@@ -49,7 +49,7 @@ class UserAddCommand extends Command
               return $output->writeln("<info>\n\n ERROR :: ".$process->getErrorOutput()."</info>");
         }
 
-        return $output->writeln('<info>'."\n\n\nSuccess ::" .$process->getOutput().'</info>');
+        return $output->writeln('<info>'."\n\n\nSuccess ::".$process->getOutput().'</info>');
                 //return openssl_encrypt('-1','passwd',$password);
     }
 }
