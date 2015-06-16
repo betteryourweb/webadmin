@@ -35,7 +35,7 @@ class SyncCommand extends Command
             $port = "--port $port";
         }
 
-        $options = " -avzp --exclude 'home/*/domains/*/storage/*/*' --delete -e ssh $port ";
+        $options = " -avzp --exclude 'home/*/domains/*/storage/*/*'  --exclude 'home/*/domains/*/vendor'--delete --delete-excluded -e ssh $port ";
 
         $source = $input->getArgument('source');
         $dest = $input->getArgument('dest');
