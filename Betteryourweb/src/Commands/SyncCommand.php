@@ -41,7 +41,8 @@ class SyncCommand extends Command
 
 
 
-      $user = $input->getArgument('user');
+      $source = $input->getArgument('source');
+      $dest = $input->getArgument('dest');
       $command =  "rsync $options $source $dest";
       $output->writeln("<info>$command</info>");
     }
