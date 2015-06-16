@@ -37,7 +37,7 @@ class SyncCommand extends Command
       if($port) $port = "--port $port";
 
 
-      $options = " -az -e ssh $port ";
+      $options = " -azp -e ssh $port ";
 
 
 
