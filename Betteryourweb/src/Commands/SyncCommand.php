@@ -24,7 +24,7 @@ class SyncCommand extends Command
             ->addArgument('dest', InputArgument::REQUIRED)
 
 
-            ->addOption('--files', null, InputOption::VALUE_NONE,'Force deletion of all user files')
+            ->addOption('--port', null, InputOption::VALUE_NONE, 'Choodee port for SSH.')
 
             ;
 
@@ -32,16 +32,17 @@ class SyncCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-      $force = $input->getOption('force');
-      if($force) $force = "--force";
+      $port = $input->getOption('port');
 
-      $remove = $input->getOption('remove');
-      if($remove) $remove = "--remove";
+      if($port) $port = "--port $port";
 
-      $options = " $force $remove ";
+
+      $options = " -avvvz -e ssh $port ";
+
+
 
       $user = $input->getArgument('user');
-      $command =  "userdel $options $user";
+      $command =  "rsync $options $source $dest";
       $output->writeln("<info>$command</info>");
     }
 }
